@@ -4230,49 +4230,99 @@
       }
     },
     "/ExecGraphRequest": {
-      "get": {
-        "description": "ExecGraphRequest",
+      "post": {
+        "description": "Execute an allowlisted Graph request for Teams Shifts endpoints.",
         "summary": "ExecGraphRequest",
         "tags": [
-          "GET"
+          "POST"
         ],
-        "parameters": [
-          {
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "name": "TenantFilter",
-            "in": "query"
-          },
-          {
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "name": "Endpoint",
-            "in": "query"
-          },
-          {
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "name": "DisablePagination",
-            "in": "query"
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "tenantFilter",
+                  "endpoint",
+                  "method"
+                ],
+                "properties": {
+                  "tenantFilter": {
+                    "type": "string",
+                    "description": "Tenant domain or ID to target."
+                  },
+                  "endpoint": {
+                    "type": "string",
+                    "description": "Graph endpoint path or URL. Must match teams/{team-ID}/schedule/*."
+                  },
+                  "method": {
+                    "type": "string",
+                    "enum": [
+                      "GET",
+                      "POST",
+                      "PATCH"
+                    ],
+                    "description": "HTTP method to execute."
+                  },
+                  "headers": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "string"
+                    },
+                    "description": "Optional extra headers. Authorization/Host/Content-Length are blocked."
+                  },
+                  "body": {
+                    "description": "Optional JSON payload for POST/PATCH requests."
+                  },
+                  "version": {
+                    "type": "string",
+                    "enum": [
+                      "v1.0",
+                      "beta"
+                    ],
+                    "description": "Optional Graph API version override."
+                  },
+                  "asApp": {
+                    "type": "boolean",
+                    "description": "Whether to use application permissions. Defaults to true."
+                  }
+                }
+              }
+            }
           }
-        ],
+        },
         "responses": {
           "200": {
+            "description": "Graph request executed successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {},
+                  "type": "object",
+                  "properties": {
+                    "Results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "Metadata": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or disallowed endpoint",
+            "content": {
+              "application/json": {
+                "schema": {
                   "type": "object"
                 }
               }
-            },
-            "description": "Successful operation"
+            }
           }
         }
       }
