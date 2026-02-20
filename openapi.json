@@ -13,9 +13,7 @@
       "post": {
         "description": "AddGroup",
         "summary": "AddGroup",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -53,9 +51,7 @@
       "post": {
         "description": "AddChocoApp",
         "summary": "AddChocoApp",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -89,13 +85,65 @@
         }
       }
     },
+    "/AddWin32ScriptApp": {
+      "post": {
+        "description": "AddWin32ScriptApp",
+        "summary": "AddWin32ScriptApp",
+        "tags": ["POST"],
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "name": "ApplicationName",
+            "in": "body"
+          },
+          {
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "name": "installScript",
+            "in": "body"
+          },
+          {
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "name": "AssignTo",
+            "in": "body"
+          },
+          {
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "name": "InstallationIntent",
+            "in": "body"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {},
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
     "/RemoveUser": {
       "get": {
         "description": "RemoveUser",
         "summary": "RemoveUser",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -133,9 +181,7 @@
       "get": {
         "description": "ListTeams",
         "summary": "ListTeams",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -181,9 +227,7 @@
       "get": {
         "description": "ExecGroupsDelete",
         "summary": "ExecGroupsDelete",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -237,9 +281,7 @@
       "get": {
         "description": "ListRoles",
         "summary": "ListRoles",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -269,9 +311,7 @@
       "get": {
         "description": "ListUserMailboxRules",
         "summary": "ListUserMailboxRules",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -317,9 +357,7 @@
       "get": {
         "description": "ExecBECCheck",
         "summary": "ExecBECCheck",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -365,9 +403,7 @@
       "get": {
         "description": "ListCalendarPermissions",
         "summary": "ListCalendarPermissions",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -405,9 +441,7 @@
       "get": {
         "description": "ExecAddSPN",
         "summary": "ExecAddSPN",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -437,9 +471,7 @@
       "get": {
         "description": "ListLicenses",
         "summary": "ListLicenses",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -469,9 +501,7 @@
       "post": {
         "description": "AddCATemplate",
         "summary": "AddCATemplate",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -509,9 +539,7 @@
       "get": {
         "description": "ExecIncidentsList",
         "summary": "ExecIncidentsList",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -541,9 +569,7 @@
       "post": {
         "description": "AddSharedMailbox",
         "summary": "AddSharedMailbox",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -573,9 +599,7 @@
       "get": {
         "description": "ListApps",
         "summary": "ListApps",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -605,9 +629,7 @@
       "get": {
         "description": "ListSharepointSettings",
         "summary": "ListSharepointSettings",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -653,9 +675,7 @@
       "get": {
         "description": "ExecSendOrgMessage",
         "summary": "ExecSendOrgMessage",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -717,9 +737,7 @@
       "post": {
         "description": "AddSpamFilterTemplate",
         "summary": "AddSpamFilterTemplate",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -757,9 +775,7 @@
       "get": {
         "description": "ListGroupTemplates",
         "summary": "ListGroupTemplates",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -789,9 +805,7 @@
       "get": {
         "description": "ListAutopilotconfig",
         "summary": "ListAutopilotconfig",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -837,9 +851,7 @@
       "get": {
         "description": "ExecSetSecurityIncident",
         "summary": "ExecSetSecurityIncident",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -917,9 +929,7 @@
       "get": {
         "description": "EditExConnector",
         "summary": "EditExConnector",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -973,9 +983,7 @@
       "post": {
         "description": "AddUser",
         "summary": "AddUser",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -1005,9 +1013,7 @@
       "get": {
         "description": "ListUserPhoto",
         "summary": "ListUserPhoto",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -1045,9 +1051,7 @@
       "get": {
         "description": "ListConditionalAccessPolicies",
         "summary": "ListConditionalAccessPolicies",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -1077,9 +1081,7 @@
       "get": {
         "description": "ListBasicAuth",
         "summary": "ListBasicAuth",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -1109,9 +1111,7 @@
       "get": {
         "description": "RemoveSpamfilterTemplate",
         "summary": "RemoveSpamfilterTemplate",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -1141,9 +1141,7 @@
       "post": {
         "description": "ExecGDAPInvite",
         "summary": "ExecGDAPInvite",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -1173,9 +1171,7 @@
       "get": {
         "description": "ListUserSigninLogs",
         "summary": "ListUserSigninLogs",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -1213,9 +1209,7 @@
       "get": {
         "description": "EditCAPolicy",
         "summary": "EditCAPolicy",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -1261,9 +1255,7 @@
       "get": {
         "description": "ListDomainHealth",
         "summary": "ListDomainHealth",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -1333,9 +1325,7 @@
       "get": {
         "description": "ExecUniversalSearch",
         "summary": "ExecUniversalSearch",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -1365,9 +1355,7 @@
       "get": {
         "description": "ListMailboxCAS",
         "summary": "ListMailboxCAS",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -1397,9 +1385,7 @@
       "get": {
         "description": "RemoveExConnectorTemplate",
         "summary": "RemoveExConnectorTemplate",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -1429,9 +1415,7 @@
       "get": {
         "description": "ListUserCounts",
         "summary": "ListUserCounts",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -1461,9 +1445,7 @@
       "get": {
         "description": "ExecGetLocalAdminPassword",
         "summary": "ExecGetLocalAdminPassword",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -1501,9 +1483,7 @@
       "get": {
         "description": "ListOrg",
         "summary": "ListOrg",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -1533,9 +1513,7 @@
       "post": {
         "description": "ExecExcludeLicenses",
         "summary": "ExecExcludeLicenses",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -1603,9 +1581,7 @@
       "get": {
         "description": "ExecExcludeLicenses",
         "summary": "ExecExcludeLicenses",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -1675,9 +1651,7 @@
       "get": {
         "description": "ExecDeleteGDAPRelationship",
         "summary": "ExecDeleteGDAPRelationship",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -1707,9 +1681,7 @@
       "post": {
         "description": "AddMSPApp",
         "summary": "AddMSPApp",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -1747,9 +1719,7 @@
       "post": {
         "description": "EditPolicy",
         "summary": "EditPolicy",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -1811,9 +1781,7 @@
       "post": {
         "description": "ExecDeviceAction",
         "summary": "ExecDeviceAction",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -1865,9 +1833,7 @@
       "get": {
         "description": "ExecDeviceAction",
         "summary": "ExecDeviceAction",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -1921,9 +1887,7 @@
       "post": {
         "description": "AddWinGetApp",
         "summary": "AddWinGetApp",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -1961,9 +1925,7 @@
       "get": {
         "description": "RemovePolicy",
         "summary": "RemovePolicy",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -2009,9 +1971,7 @@
       "post": {
         "description": "AddExConnector",
         "summary": "AddExConnector",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -2041,9 +2001,7 @@
       "get": {
         "description": "ListTeamsVoice",
         "summary": "ListTeamsVoice",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -2073,9 +2031,7 @@
       "get": {
         "description": "ListTeamsActivity",
         "summary": "ListTeamsActivity",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -2113,9 +2069,7 @@
       "get": {
         "description": "ListSpamFilterTemplates",
         "summary": "ListSpamFilterTemplates",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -2145,9 +2099,7 @@
       "get": {
         "description": "ExecCopyForSent",
         "summary": "ExecCopyForSent",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -2193,9 +2145,7 @@
       "get": {
         "description": "ListAzureADConnectStatus",
         "summary": "ListAzureADConnectStatus",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -2233,9 +2183,7 @@
       "get": {
         "description": "ExecEnableArchive",
         "summary": "ExecEnableArchive",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -2273,9 +2221,7 @@
       "get": {
         "description": "ExecGetRecoveryKey",
         "summary": "ExecGetRecoveryKey",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -2313,9 +2259,7 @@
       "get": {
         "description": "ListSharedMailboxStatistics",
         "summary": "ListSharedMailboxStatistics",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -2345,9 +2289,7 @@
       "post": {
         "description": "ListPotentialApps",
         "summary": "ListPotentialApps",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -2385,9 +2327,7 @@
       "get": {
         "description": "ExecCPVPermissions",
         "summary": "ExecCPVPermissions",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -2417,9 +2357,7 @@
       "get": {
         "description": "ListSharepointQuota",
         "summary": "ListSharepointQuota",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -2449,9 +2387,7 @@
       "get": {
         "description": "ListDefenderTVM",
         "summary": "ListDefenderTVM",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -2481,9 +2417,7 @@
       "post": {
         "description": "ExecEditMailboxPermissions",
         "summary": "ExecEditMailboxPermissions",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -2569,9 +2503,7 @@
       "post": {
         "description": "AddOfficeApp",
         "summary": "AddOfficeApp",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -2657,9 +2589,7 @@
       "get": {
         "description": "EditSpamFilter",
         "summary": "EditSpamFilter",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -2705,9 +2635,7 @@
       "get": {
         "description": "ListSignIns",
         "summary": "ListSignIns",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -2753,9 +2681,7 @@
       "get": {
         "description": "ExecDnsConfig",
         "summary": "ExecDnsConfig",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -2801,9 +2727,7 @@
       "post": {
         "description": "ExecEmailForward",
         "summary": "ExecEmailForward",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -2873,9 +2797,7 @@
       "post": {
         "description": "ExecBECRemediate",
         "summary": "ExecBECRemediate",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -2913,9 +2835,7 @@
       "get": {
         "description": "ListPartnerRelationships",
         "summary": "ListPartnerRelationships",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -2945,9 +2865,7 @@
       "post": {
         "description": "ListAppsRepository",
         "summary": "ListAppsRepository",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -2985,9 +2903,7 @@
       "get": {
         "description": "ExecClrImmId",
         "summary": "ExecClrImmId",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -3025,9 +2941,7 @@
       "post": {
         "description": "AddGroupTemplate",
         "summary": "AddGroupTemplate",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -3097,9 +3011,7 @@
       "post": {
         "description": "Standards_IntuneTemplate",
         "summary": "Standards_IntuneTemplate",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -3161,9 +3073,7 @@
       "get": {
         "description": "ListIntuneTemplates",
         "summary": "ListIntuneTemplates",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -3193,9 +3103,7 @@
       "get": {
         "description": "ExecResetPass",
         "summary": "ExecResetPass",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -3249,9 +3157,7 @@
       "get": {
         "description": "ExecAlertsList",
         "summary": "ExecAlertsList",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -3281,9 +3187,7 @@
       "get": {
         "description": "ExecQuarantineManagement",
         "summary": "ExecQuarantineManagement",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -3337,9 +3241,7 @@
       "get": {
         "description": "ExecRestoreDeleted",
         "summary": "ExecRestoreDeleted",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -3377,9 +3279,7 @@
       "get": {
         "description": "ListUserGroups",
         "summary": "ListUserGroups",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -3417,9 +3317,7 @@
       "get": {
         "description": "RemoveStandard",
         "summary": "RemoveStandard",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -3449,9 +3347,7 @@
       "get": {
         "description": "ListUserConditionalAccessPolicies",
         "summary": "ListUserConditionalAccessPolicies",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -3489,9 +3385,7 @@
       "get": {
         "description": "ListCAtemplates",
         "summary": "ListCAtemplates",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -3521,9 +3415,7 @@
       "get": {
         "description": "ListContacts",
         "summary": "ListContacts",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -3644,9 +3536,7 @@
       "get": {
         "description": "ListContactPermissions - Retrieves contact folder permissions for a specified user",
         "summary": "ListContactPermissions",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -3729,20 +3619,14 @@
       "post": {
         "description": "ExecModifyContactPerms - Modifies contact folder permissions for a specified user",
         "summary": "ExecModifyContactPerms",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "userID",
-                  "tenantFilter",
-                  "permissions"
-                ],
+                "required": ["userID", "tenantFilter", "permissions"],
                 "properties": {
                   "userID": {
                     "type": "string",
@@ -3801,11 +3685,7 @@
                           "default": false
                         }
                       },
-                      "required": [
-                        "PermissionLevel",
-                        "Modification",
-                        "UserID"
-                      ]
+                      "required": ["PermissionLevel", "Modification", "UserID"]
                     }
                   }
                 }
@@ -3897,9 +3777,7 @@
       "get": {
         "description": "ListMailboxRules",
         "summary": "ListMailboxRules",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -3929,9 +3807,7 @@
       "get": {
         "description": "ListSites",
         "summary": "ListSites",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -3977,9 +3853,7 @@
       "post": {
         "description": "ExecSetOoO",
         "summary": "ExecSetOoO",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -4033,9 +3907,7 @@
       "post": {
         "description": "AddExConnectorTemplate",
         "summary": "AddExConnectorTemplate",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -4073,9 +3945,7 @@
       "post": {
         "description": "ExecOffboardUser",
         "summary": "ExecOffboardUser",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -4153,9 +4023,7 @@
       "get": {
         "description": "ListTenantDetails",
         "summary": "ListTenantDetails",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -4185,9 +4053,7 @@
       "get": {
         "description": "ExecConverttoSharedMailbox",
         "summary": "ExecConverttoSharedMailbox",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -4230,6 +4096,52 @@
       }
     },
     "/ExecGraphRequest": {
+      "get": {
+        "description": "ExecGraphRequest",
+        "summary": "ExecGraphRequest",
+        "tags": [
+          "GET"
+        ],
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "name": "TenantFilter",
+            "in": "query"
+          },
+          {
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "name": "Endpoint",
+            "in": "query"
+          },
+          {
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "name": "DisablePagination",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {},
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful operation"
+          }
+        }
+      },
       "post": {
         "description": "Execute an allowlisted Graph request for Teams Shifts endpoints.",
         "summary": "ExecGraphRequest",
@@ -4331,9 +4243,7 @@
       "get": {
         "description": "ListDefenderState",
         "summary": "ListDefenderState",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -4363,9 +4273,7 @@
       "get": {
         "description": "ListMailQuarantine",
         "summary": "ListMailQuarantine",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -4395,9 +4303,7 @@
       "get": {
         "description": "ListIntunePolicy",
         "summary": "ListIntunePolicy",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -4443,9 +4349,7 @@
       "get": {
         "description": "ExecRevokeSessions",
         "summary": "ExecRevokeSessions",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -4483,9 +4387,7 @@
       "get": {
         "description": "ListmailboxPermissions",
         "summary": "ListmailboxPermissions",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -4523,9 +4425,7 @@
       "post": {
         "description": "ExecExtensionsConfig",
         "summary": "ExecExtensionsConfig",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -4555,9 +4455,7 @@
       "get": {
         "description": "ListDevices",
         "summary": "ListDevices",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -4587,9 +4485,7 @@
       "get": {
         "description": "RemoveCATemplate",
         "summary": "RemoveCATemplate",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -4619,9 +4515,7 @@
       "get": {
         "description": "RemoveQueuedApp",
         "summary": "RemoveQueuedApp",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -4651,9 +4545,7 @@
       "get": {
         "description": "DomainAnalyser_List",
         "summary": "DomainAnalyser_List",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -4683,9 +4575,7 @@
       "post": {
         "description": "AddNamedLocation",
         "summary": "AddNamedLocation",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -4763,9 +4653,7 @@
       "get": {
         "description": "ListTransportRulesTemplates",
         "summary": "ListTransportRulesTemplates",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -4795,9 +4683,7 @@
       "get": {
         "description": "ExecEditCalendarPermissions",
         "summary": "ExecEditCalendarPermissions",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -4867,9 +4753,7 @@
       "get": {
         "description": "ExecDisableUser",
         "summary": "ExecDisableUser",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -4915,9 +4799,7 @@
       "post": {
         "description": "AddTransportRule",
         "summary": "AddTransportRule",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -4947,9 +4829,7 @@
       "get": {
         "description": "ListTenants",
         "summary": "ListTenants",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -5003,9 +4883,7 @@
       "get": {
         "description": "ExecResetMFA",
         "summary": "ExecResetMFA",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -5043,9 +4921,7 @@
       "get": {
         "description": "ListIntuneIntents",
         "summary": "ListIntuneIntents",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -5075,9 +4951,7 @@
       "get": {
         "description": "ListStandards",
         "summary": "ListStandards",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -5107,9 +4981,7 @@
       "get": {
         "description": "ListDeletedItems",
         "summary": "ListDeletedItems",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -5139,9 +5011,7 @@
       "get": {
         "description": "ExecGroupsHideFromGAL",
         "summary": "ExecGroupsHideFromGAL",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -5195,9 +5065,7 @@
       "get": {
         "description": "ExecSendPush",
         "summary": "ExecSendPush",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -5235,9 +5103,7 @@
       "post": {
         "description": "ExecExtensionMapping",
         "summary": "ExecExtensionMapping",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -5281,9 +5147,7 @@
       "get": {
         "description": "ExecExtensionMapping",
         "summary": "ExecExtensionMapping",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -5329,9 +5193,7 @@
       "get": {
         "description": "ListAppStatus",
         "summary": "ListAppStatus",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -5369,9 +5231,7 @@
       "get": {
         "description": "GetVersion",
         "summary": "GetVersion",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -5401,9 +5261,7 @@
       "get": {
         "description": "ExecMailboxMobileDevices",
         "summary": "ExecMailboxMobileDevices",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -5465,9 +5323,7 @@
       "get": {
         "description": "RemoveApp",
         "summary": "RemoveApp",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -5505,9 +5361,7 @@
       "post": {
         "description": "ExecPasswordConfig",
         "summary": "ExecPasswordConfig",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -5543,9 +5397,7 @@
       "get": {
         "description": "ExecPasswordConfig",
         "summary": "ExecPasswordConfig",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -5583,9 +5435,7 @@
       "get": {
         "description": "ExecHideFromGAL",
         "summary": "ExecHideFromGAL",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -5631,9 +5481,7 @@
       "post": {
         "description": "EditUser",
         "summary": "EditUser",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -5663,9 +5511,7 @@
       "get": {
         "description": "ListOAuthApps",
         "summary": "ListOAuthApps",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -5695,9 +5541,7 @@
       "get": {
         "description": "ListDeviceDetails",
         "summary": "ListDeviceDetails",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -5751,9 +5595,7 @@
       "get": {
         "description": "ListLogs",
         "summary": "ListLogs",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -5815,9 +5657,7 @@
       "get": {
         "description": "ListAllTenantDeviceCompliance",
         "summary": "ListAllTenantDeviceCompliance",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -5847,9 +5687,7 @@
       "get": {
         "description": "ListUsers",
         "summary": "ListUsers",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -5903,9 +5741,7 @@
       "get": {
         "description": "ListMessageTrace",
         "summary": "ListMessageTrace",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -5975,9 +5811,7 @@
       "get": {
         "description": "ListPhishPolicies",
         "summary": "ListPhishPolicies",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -6007,9 +5841,7 @@
       "get": {
         "description": "RemoveSpamfilter",
         "summary": "RemoveSpamfilter",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -6047,9 +5879,7 @@
       "post": {
         "description": "ExecNotificationConfig",
         "summary": "ExecNotificationConfig",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -6119,9 +5949,7 @@
       "post": {
         "description": "ExecSAMSetup",
         "summary": "ExecSAMSetup",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -6245,9 +6073,7 @@
       "get": {
         "description": "ExecSAMSetup",
         "summary": "ExecSAMSetup",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -6373,9 +6199,7 @@
       "get": {
         "description": "ListUserMailboxDetails",
         "summary": "ListUserMailboxDetails",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -6413,9 +6237,7 @@
       "get": {
         "description": "ListExConnectorTemplates",
         "summary": "ListExConnectorTemplates",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -6445,9 +6267,7 @@
       "post": {
         "description": "AddDefenderDeployment",
         "summary": "AddDefenderDeployment",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -6509,9 +6329,7 @@
       "get": {
         "description": "ListGDAPInvite",
         "summary": "ListGDAPInvite",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -6541,9 +6359,7 @@
       "post": {
         "description": "AddIntuneTemplate",
         "summary": "AddIntuneTemplate",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -6619,9 +6435,7 @@
       "get": {
         "description": "AddIntuneTemplate",
         "summary": "AddIntuneTemplate",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -6699,9 +6513,7 @@
       "post": {
         "description": "AddAPDevice",
         "summary": "AddAPDevice",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -6747,9 +6559,7 @@
       "get": {
         "description": "RemoveTransportRuleTemplate",
         "summary": "RemoveTransportRuleTemplate",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -6779,9 +6589,7 @@
       "get": {
         "description": "ListMailboxMobileDevices",
         "summary": "ListMailboxMobileDevices",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -6819,9 +6627,7 @@
       "post": {
         "description": "ExecExcludeTenant",
         "summary": "ExecExcludeTenant",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -6889,9 +6695,7 @@
       "get": {
         "description": "ExecExcludeTenant",
         "summary": "ExecExcludeTenant",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -6961,9 +6765,7 @@
       "get": {
         "description": "ExecSetSecurityAlert",
         "summary": "ExecSetSecurityAlert",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -7025,9 +6827,7 @@
       "post": {
         "description": "ExecAddGDAPRole",
         "summary": "ExecAddGDAPRole",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -7065,9 +6865,7 @@
       "get": {
         "description": "ListExchangeConnectors",
         "summary": "ListExchangeConnectors",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -7097,9 +6895,7 @@
       "post": {
         "description": "AddTransportTemplate",
         "summary": "AddTransportTemplate",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -7137,9 +6933,7 @@
       "get": {
         "description": "ExecCreateTAP",
         "summary": "ExecCreateTAP",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -7177,9 +6971,7 @@
       "get": {
         "description": "RemoveCAPolicy",
         "summary": "RemoveCAPolicy",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -7217,9 +7009,7 @@
       "get": {
         "description": "RemoveTransportRule",
         "summary": "RemoveTransportRule",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -7257,9 +7047,7 @@
       "get": {
         "description": "RemoveAPDevice",
         "summary": "RemoveAPDevice",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -7297,9 +7085,7 @@
       "post": {
         "description": "AddPolicy",
         "summary": "AddPolicy",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -7369,9 +7155,7 @@
       "post": {
         "description": "AddContact",
         "summary": "AddContact",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -7401,9 +7185,7 @@
       "get": {
         "description": "PublicScripts",
         "summary": "PublicScripts",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -7433,9 +7215,7 @@
       "get": {
         "description": "RemoveContact",
         "summary": "RemoveContact",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -7473,9 +7253,7 @@
       "get": {
         "description": "EditTransportRule",
         "summary": "EditTransportRule",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -7521,9 +7299,7 @@
       "post": {
         "description": "AddSpamFilter",
         "summary": "AddSpamFilter",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -7553,9 +7329,7 @@
       "get": {
         "description": "RemoveIntuneTemplate",
         "summary": "RemoveIntuneTemplate",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -7585,9 +7359,7 @@
       "get": {
         "description": "ExecGroupsDeliveryManagement",
         "summary": "ExecGroupsDeliveryManagement",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -7641,9 +7413,7 @@
       "get": {
         "description": "ListUserDevices",
         "summary": "ListUserDevices",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -7681,9 +7451,7 @@
       "post": {
         "description": "EditTenant",
         "summary": "EditTenant",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -7737,9 +7505,7 @@
       "get": {
         "description": "ExecAppApproval",
         "summary": "ExecAppApproval",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -7777,9 +7543,7 @@
       "get": {
         "description": "ListInactiveAccounts",
         "summary": "ListInactiveAccounts",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -7809,9 +7573,7 @@
       "post": {
         "description": "AddAlert",
         "summary": "AddAlert",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -7977,9 +7739,7 @@
       "get": {
         "description": "ListMailboxes",
         "summary": "ListMailboxes",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -8009,9 +7769,7 @@
       "get": {
         "description": "ListMFAUsers",
         "summary": "ListMFAUsers",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -8041,9 +7799,7 @@
       "get": {
         "description": "RemoveGroupTemplate",
         "summary": "RemoveGroupTemplate",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -8073,9 +7829,7 @@
       "get": {
         "description": "ExecRunBackup",
         "summary": "ExecRunBackup",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -8105,9 +7859,7 @@
       "get": {
         "description": "ListTransportRules",
         "summary": "ListTransportRules",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -8137,9 +7889,7 @@
       "get": {
         "description": "ExecMaintenanceScripts",
         "summary": "ExecMaintenanceScripts",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -8177,9 +7927,7 @@
       "get": {
         "description": "GetCippAlerts",
         "summary": "GetCippAlerts",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -8209,9 +7957,7 @@
       "post": {
         "description": "ExecGDAPMigration",
         "summary": "ExecGDAPMigration",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -8249,9 +7995,7 @@
       "get": {
         "description": "ListGroups",
         "summary": "ListGroups",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -8305,9 +8049,7 @@
       "get": {
         "description": "ListDomains",
         "summary": "ListDomains",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -8337,9 +8079,7 @@
       "get": {
         "description": "ListExternalTenantInfo",
         "summary": "ListExternalTenantInfo",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -8369,9 +8109,7 @@
       "get": {
         "description": "ListAPDevices",
         "summary": "ListAPDevices",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -8409,9 +8147,7 @@
       "post": {
         "description": "AddAutopilotConfig",
         "summary": "AddAutopilotConfig",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -8457,9 +8193,7 @@
       "post": {
         "description": "AddCAPolicy",
         "summary": "AddCAPolicy",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -8489,9 +8223,7 @@
       "get": {
         "description": "ListMailboxStatistics",
         "summary": "ListMailboxStatistics",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -8521,9 +8253,7 @@
       "get": {
         "description": "ExecAssignApp",
         "summary": "ExecAssignApp",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -8569,9 +8299,7 @@
       "get": {
         "description": "ExecExtensionTest",
         "summary": "ExecExtensionTest",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -8601,9 +8329,7 @@
       "post": {
         "description": "ExecSetMailboxQuota",
         "summary": "ExecSetMailboxQuota",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -8673,9 +8399,7 @@
       "get": {
         "description": "ListNamedLocations",
         "summary": "ListNamedLocations",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -8705,9 +8429,7 @@
       "get": {
         "description": "ListMFAUsersAllTenants",
         "summary": "ListMFAUsersAllTenants",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -8737,9 +8459,7 @@
       "get": {
         "description": "RemoveQueuedAlert",
         "summary": "RemoveQueuedAlert",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -8769,9 +8489,7 @@
       "post": {
         "description": "ExecAccessChecks",
         "summary": "ExecAccessChecks",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -8815,9 +8533,7 @@
       "get": {
         "description": "ExecAccessChecks",
         "summary": "ExecAccessChecks",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -8863,9 +8579,7 @@
       "get": {
         "description": "ListSharedMailboxAccountEnabled",
         "summary": "ListSharedMailboxAccountEnabled",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -8895,9 +8609,7 @@
       "get": {
         "description": "ListSpamfilter",
         "summary": "ListSpamfilter",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -8927,9 +8639,7 @@
       "get": {
         "description": "ListQuarantinePolicy",
         "summary": "ListQuarantinePolicy",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -8967,9 +8677,7 @@
       "post": {
         "description": "AddQuarantinePolicy",
         "summary": "AddQuarantinePolicy",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -9063,9 +8771,7 @@
       "post": {
         "description": "EditQuarantinePolicy",
         "summary": "EditQuarantinePolicy",
-        "tags": [
-          "POST"
-        ],
+        "tags": ["POST"],
         "parameters": [
           {
             "required": true,
@@ -9191,9 +8897,7 @@
       "get": {
         "description": "RemoveExConnector",
         "summary": "RemoveExConnector",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -9239,9 +8943,7 @@
       "get": {
         "description": "RemoveQuarantinePolicy",
         "summary": "RemoveQuarantinePolicy",
-        "tags": [
-          "GET"
-        ],
+        "tags": ["GET"],
         "parameters": [
           {
             "required": true,
@@ -9288,9 +8990,7 @@
     "get": {
       "description": "ExecDeleteSafeLinksPolicy",
       "summary": "ExecDeleteSafeLinksPolicy",
-      "tags": [
-        "GET"
-      ],
+      "tags": ["GET"],
       "parameters": [
         {
           "required": true,
@@ -9336,9 +9036,7 @@
     "post": {
       "description": "EditSafeLinksPolicy",
       "summary": "EditSafeLinksPolicy",
-      "tags": [
-        "POST"
-      ],
+      "tags": ["POST"],
       "parameters": [
         {
           "required": true,
@@ -9484,9 +9182,7 @@
     "get": {
       "description": "ListSafeLinksPolicyDetails",
       "summary": "ListSafeLinksPolicyDetails",
-      "tags": [
-        "GET"
-      ],
+      "tags": ["GET"],
       "parameters": [
         {
           "required": true,
@@ -9644,9 +9340,7 @@
     "post": {
       "description": "Create a new SafeLinks policy and associated rule",
       "summary": "Create SafeLinks Policy and Rule Configuration",
-      "tags": [
-        "POST"
-      ],
+      "tags": ["POST"],
       "parameters": [
         {
           "required": true,
@@ -9841,9 +9535,7 @@
     "get": {
       "description": "List SafeLinks Policy Templates",
       "summary": "List SafeLinks Policy Templates",
-      "tags": [
-        "GET"
-      ],
+      "tags": ["GET"],
       "responses": {
         "200": {
           "content": {
@@ -9866,9 +9558,7 @@
     "get": {
       "description": "Remove SafeLinks Policy Template",
       "summary": "Remove SafeLinks Policy Template",
-      "tags": [
-        "GET"
-      ],
+      "tags": ["GET"],
       "parameters": [
         {
           "required": true,
@@ -9898,9 +9588,7 @@
     "post": {
       "description": "Add SafeLinks Policy Template",
       "summary": "Add SafeLinks Policy Template",
-      "tags": [
-        "POST"
-      ],
+      "tags": ["POST"],
       "requestBody": {
         "content": {
           "application/json": {
@@ -9930,9 +9618,7 @@
     "post": {
       "description": "Deploy SafeLinks Policy From Template",
       "summary": "Deploy SafeLinks Policy From Template",
-      "tags": [
-        "POST"
-      ],
+      "tags": ["POST"],
       "requestBody": {
         "content": {
           "application/json": {
@@ -9962,9 +9648,7 @@
     "get": {
       "description": "List retention policies or get a specific retention policy by name",
       "summary": "Get Retention Policies",
-      "tags": [
-        "GET"
-      ],
+      "tags": ["GET"],
       "parameters": [
         {
           "required": true,
@@ -10046,9 +9730,7 @@
     "post": {
       "description": "Create, modify, or delete retention policies",
       "summary": "Manage Retention Policies",
-      "tags": [
-        "POST"
-      ],
+      "tags": ["POST"],
       "parameters": [
         {
           "required": true,
@@ -10184,9 +9866,7 @@
     "get": {
       "description": "List retention tags or get a specific retention tag by name",
       "summary": "Get Retention Tags",
-      "tags": [
-        "GET"
-      ],
+      "tags": ["GET"],
       "parameters": [
         {
           "required": true,
@@ -10274,9 +9954,7 @@
     "post": {
       "description": "Create, modify, or delete retention tags",
       "summary": "Manage Retention Tags",
-      "tags": [
-        "POST"
-      ],
+      "tags": ["POST"],
       "parameters": [
         {
           "required": true,
@@ -10304,12 +9982,39 @@
                       },
                       "Type": {
                         "type": "string",
-                        "enum": ["All", "Inbox", "SentItems", "DeletedItems", "Drafts", "Outbox", "JunkEmail", "Journal", "SyncIssues", "ConversationHistory", "Personal", "RecoverableItems", "NonIpmRoot", "LegacyArchiveJournals", "Clutter", "Calendar", "Notes", "Tasks", "Contacts", "RssSubscriptions", "ManagedCustomFolder"],
+                        "enum": [
+                          "All",
+                          "Inbox",
+                          "SentItems",
+                          "DeletedItems",
+                          "Drafts",
+                          "Outbox",
+                          "JunkEmail",
+                          "Journal",
+                          "SyncIssues",
+                          "ConversationHistory",
+                          "Personal",
+                          "RecoverableItems",
+                          "NonIpmRoot",
+                          "LegacyArchiveJournals",
+                          "Clutter",
+                          "Calendar",
+                          "Notes",
+                          "Tasks",
+                          "Contacts",
+                          "RssSubscriptions",
+                          "ManagedCustomFolder"
+                        ],
                         "description": "Type of the retention tag"
                       },
                       "RetentionAction": {
                         "type": "string",
-                        "enum": ["DeleteAndAllowRecovery", "PermanentlyDelete", "MoveToArchive", "MarkAsPastRetentionLimit"],
+                        "enum": [
+                          "DeleteAndAllowRecovery",
+                          "PermanentlyDelete",
+                          "MoveToArchive",
+                          "MarkAsPastRetentionLimit"
+                        ],
                         "description": "Action to take when retention period expires"
                       },
                       "AgeLimitForRetention": {
@@ -10354,7 +10059,12 @@
                       },
                       "RetentionAction": {
                         "type": "string",
-                        "enum": ["DeleteAndAllowRecovery", "PermanentlyDelete", "MoveToArchive", "MarkAsPastRetentionLimit"],
+                        "enum": [
+                          "DeleteAndAllowRecovery",
+                          "PermanentlyDelete",
+                          "MoveToArchive",
+                          "MarkAsPastRetentionLimit"
+                        ],
                         "description": "Action to take when retention period expires"
                       },
                       "AgeLimitForRetention": {
@@ -10443,9 +10153,7 @@
     "post": {
       "description": "Apply a retention policy to one or more mailboxes",
       "summary": "Set Mailbox Retention Policies",
-      "tags": [
-        "POST"
-      ],
+      "tags": ["POST"],
       "parameters": [
         {
           "required": true,
