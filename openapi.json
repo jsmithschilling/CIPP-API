@@ -4097,7 +4097,7 @@
     },
     "/ExecGraphRequest": {
       "get": {
-        "description": "ExecGraphRequest",
+        "description": "Execute an allowlisted Graph GET request.",
         "summary": "ExecGraphRequest",
         "tags": [
           "GET"
@@ -4117,7 +4117,8 @@
               "type": "string"
             },
             "name": "Endpoint",
-            "in": "query"
+            "in": "query",
+            "description": "Allowed: teams/{team-ID}/schedule/* or chats/{chat-ID}."
           },
           {
             "required": true,

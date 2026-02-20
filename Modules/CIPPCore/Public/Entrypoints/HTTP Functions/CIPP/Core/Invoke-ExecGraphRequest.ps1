@@ -32,7 +32,8 @@ function Invoke-ExecGraphRequest {
         param(
             [Parameter(Mandatory = $true)]
             [string]$Endpoint,
-            [string]$VersionOverride
+            [string]$VersionOverride,
+            [string]$Method
         )
 
         $GraphVersion = if ($VersionOverride) { $VersionOverride.Trim().ToLowerInvariant() } else { 'beta' }
@@ -70,15 +71,40 @@ function Invoke-ExecGraphRequest {
         }
 
         $EndpointPath = ($NormalizedEndpoint -split '\?')[0]
-        if ($EndpointPath -notmatch '^teams/[^/\?]+/schedule(?:/.*)?$') {
-            throw "Endpoint '$EndpointPath' is blocked. Allowed pattern: teams/{team-ID}/schedule/*."
+        $AllowedTarget = $null
+        $AllowedRules = @(
+            @{
+                Pattern = '^teams/[^/\?]+/schedule(?:/.*)?$'
+                Methods = @('GET', 'POST', 'PATCH')
+                Target  = 'teams/{team-ID}/schedule/*'
+            },
+            @{
+                Pattern = '^chats/[^/\?]+$'
+                Methods = @('GET')
+                Target  = 'chats/{chat-ID}'
+            }
+        )
+
+        foreach ($Rule in $AllowedRules) {
+            if ($EndpointPath -match $Rule.Pattern) {
+                if ($Method -notin $Rule.Methods) {
+                    throw "Method '$Method' is not allowed for endpoint '$EndpointPath'. Allowed methods: $($Rule.Methods -join ', ')."
+                }
+
+                $AllowedTarget = $Rule.Target
+                break
+            }
+        }
+
+        if (-not $AllowedTarget) {
+            throw "Endpoint '$EndpointPath' is blocked. Allowed patterns: teams/{team-ID}/schedule/*, chats/{chat-ID} (GET only)."
         }
 
         return @{
             Version       = $GraphVersion
             Endpoint      = $NormalizedEndpoint
             EndpointPath  = $EndpointPath
-            AllowedTarget = 'teams/{team-ID}/schedule/*'
+            AllowedTarget = $AllowedTarget
         }
     }
 
@@ -200,7 +226,7 @@ function Invoke-ExecGraphRequest {
         $AsApp = if ($null -eq $AsAppValue) { $true } else { [System.Convert]::ToBoolean($AsAppValue) }
 
         $VersionOverride = [string](Get-ExecGraphRequestValue -Body $RequestBody -Query $RequestQuery -Names @('version', 'Version'))
-        $ResolvedEndpoint = Resolve-ExecGraphEndpoint -Endpoint $EndpointValue -VersionOverride $VersionOverride
+        $ResolvedEndpoint = Resolve-ExecGraphEndpoint -Endpoint $EndpointValue -VersionOverride $VersionOverride -Method $Method
 
         $HeaderResult = Convert-ExecGraphHeaders -RawHeaders (Get-ExecGraphRequestValue -Body $RequestBody -Query $RequestQuery -Names @('headers', 'Headers'))
         $BodyJson = Convert-ExecGraphBody -Method $Method -RawBody (Get-ExecGraphRequestValue -Body $RequestBody -Query $RequestQuery -Names @('body', 'Body'))
