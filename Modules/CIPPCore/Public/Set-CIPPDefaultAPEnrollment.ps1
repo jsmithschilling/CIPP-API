@@ -4,6 +4,7 @@ function Set-CIPPDefaultAPEnrollment {
         $TenantFilter,
         $ShowProgress,
         $BlockDevice,
+        $AllowRetry,
         $AllowReset,
         $EnableLog,
         $ErrorMessage,
@@ -16,13 +17,21 @@ function Set-CIPPDefaultAPEnrollment {
     )
 
     try {
+        $CanRetry = if ($null -ne $AllowRetry) {
+            [bool]$AllowRetry
+        } elseif ($null -ne $BlockDevice) {
+            -not [bool]$BlockDevice
+        } else {
+            $true
+        }
+
         $ObjBody = [pscustomobject]@{
             '@odata.type'                             = '#microsoft.graph.windows10EnrollmentCompletionPageConfiguration'
             'id'                                      = 'DefaultWindows10EnrollmentCompletionPageConfiguration'
             'displayName'                             = 'All users and all devices'
             'description'                             = 'This is the default enrollment status screen configuration applied with the lowest priority to all users and all devices regardless of group membership.'
             'showInstallationProgress'                = [bool]$ShowProgress
-            'blockDeviceSetupRetryByUser'             = ![bool]$BlockDevice
+            'blockDeviceSetupRetryByUser'             = -not $CanRetry
             'allowDeviceResetOnInstallFailure'        = [bool]$AllowReset
             'allowLogCollectionOnInstallFailure'      = [bool]$EnableLog
             'customErrorMessage'                      = "$ErrorMessage"

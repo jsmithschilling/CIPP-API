@@ -51,13 +51,20 @@ function Invoke-CIPPStandardAutopilotStatusPage {
 
         # Compatibility for standards made in v8.3.0 or before, which did not have the InstallWindowsUpdates setting
         $InstallWindowsUpdates = $Settings.InstallWindowsUpdates ?? $false
+        $AllowRetry = if ($null -ne $Settings.AllowRetry) {
+            [bool]$Settings.AllowRetry
+        } elseif ($null -ne $Settings.BlockDevice) {
+            -not [bool]$Settings.BlockDevice
+        } else {
+            $true
+        }
 
         $StateIsCorrect = ($CurrentConfig.installProgressTimeoutInMinutes -eq $Settings.TimeOutInMinutes) -and
         ($CurrentConfig.customErrorMessage -eq $Settings.ErrorMessage) -and
         ($CurrentConfig.showInstallationProgress -eq $Settings.ShowProgress) -and
         ($CurrentConfig.allowLogCollectionOnInstallFailure -eq $Settings.EnableLog) -and
         ($CurrentConfig.trackInstallProgressForAutopilotOnly -eq $Settings.OBEEOnly) -and
-        ($CurrentConfig.blockDeviceSetupRetryByUser -eq !$Settings.BlockDevice) -and
+        ($CurrentConfig.blockDeviceSetupRetryByUser -eq (-not $AllowRetry)) -and
         ($CurrentConfig.installQualityUpdates -eq $InstallWindowsUpdates) -and
         ($CurrentConfig.allowDeviceResetOnInstallFailure -eq $Settings.AllowReset) -and
         ($CurrentConfig.allowDeviceUseOnInstallFailure -eq $Settings.AllowFail)
@@ -85,7 +92,7 @@ function Invoke-CIPPStandardAutopilotStatusPage {
         showInstallationProgress             = $Settings.ShowProgress
         allowLogCollectionOnInstallFailure   = $Settings.EnableLog
         trackInstallProgressForAutopilotOnly = $Settings.OBEEOnly
-        blockDeviceSetupRetryByUser          = !$Settings.BlockDevice
+        blockDeviceSetupRetryByUser          = -not $AllowRetry
         installQualityUpdates                = $InstallWindowsUpdates
         allowDeviceResetOnInstallFailure     = $Settings.AllowReset
         allowDeviceUseOnInstallFailure       = $Settings.AllowFail
@@ -97,6 +104,7 @@ function Invoke-CIPPStandardAutopilotStatusPage {
             $Parameters = @{
                 TenantFilter          = $Tenant
                 ShowProgress          = $Settings.ShowProgress
+                AllowRetry            = $AllowRetry
                 BlockDevice           = $Settings.BlockDevice
                 InstallWindowsUpdates = $InstallWindowsUpdates
                 AllowReset            = $Settings.AllowReset
