@@ -31,6 +31,37 @@ function Invoke-ExecOnboardTenant {
                 $TenMinutesAgo = (Get-Date).AddMinutes(-10).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')
                 $TenantOnboarding = Get-CIPPAzDataTableEntity @OnboardTable -Filter "RowKey eq '$SafeId' and Timestamp ge datetime'$TenMinutesAgo'"
                 if (!$TenantOnboarding -or [bool]$Request.Body.Retry) {
+                    $InitialLogs = [System.Collections.Generic.List[object]]::new()
+                    $InitialLogs.Add([PSCustomObject]@{
+                            Date = (Get-Date).ToUniversalTime()
+                            Log  = "Onboarding record created for relationship $Id"
+                        })
+
+                    $InitialRelationship = [PSCustomObject]@{
+                        id       = $Id
+                        customer = [PSCustomObject]@{
+                            displayName = $Id
+                            tenantId    = ''
+                        }
+                    }
+                    try {
+                        $RelationshipData = New-GraphGetRequest -Uri "https://graph.microsoft.com/beta/tenantRelationships/delegatedAdminRelationships/$Id"
+                        if ($RelationshipData) {
+                            $InitialRelationship = $RelationshipData
+                            if ($RelationshipData.customer.displayName) {
+                                $InitialLogs.Add([PSCustomObject]@{
+                                        Date = (Get-Date).ToUniversalTime()
+                                        Log  = "Resolved relationship customer: $($RelationshipData.customer.displayName)"
+                                    })
+                            }
+                        }
+                    } catch {
+                        $InitialLogs.Add([PSCustomObject]@{
+                                Date = (Get-Date).ToUniversalTime()
+                                Log  = "Could not resolve relationship details at startup: $($_.Exception.Message)"
+                            })
+                    }
+
                     $OnboardingSteps = [PSCustomObject]@{
                         'Step1' = @{
                             'Status'  = 'pending'
@@ -61,11 +92,11 @@ function Invoke-ExecOnboardTenant {
                     $TenantOnboarding = [PSCustomObject]@{
                         PartitionKey    = 'Onboarding'
                         RowKey          = [string]$SafeId
-                        CustomerId      = ''
+                        CustomerId      = $InitialRelationship.customer.tenantId ?? ''
                         Status          = 'queued'
                         OnboardingSteps = [string](ConvertTo-Json -InputObject $OnboardingSteps -Compress)
-                        Relationship    = ''
-                        Logs            = ''
+                        Relationship    = [string](ConvertTo-Json -InputObject $InitialRelationship -Compress -Depth 10)
+                        Logs            = [string](ConvertTo-Json -InputObject @($InitialLogs) -Compress)
                         Exception       = ''
                     }
                     Add-CIPPAzDataTableEntity @OnboardTable -Entity $TenantOnboarding -Force -ErrorAction Stop
@@ -85,6 +116,12 @@ function Invoke-ExecOnboardTenant {
                         Batch            = @($Item)
                     }
                     $InstanceId = Start-CIPPOrchestrator -InputObject $InputObject
+                    $InitialLogs.Add([PSCustomObject]@{
+                            Date = (Get-Date).ToUniversalTime()
+                            Log  = "Onboarding job queued with instance reference $InstanceId"
+                        })
+                    $TenantOnboarding.Logs = [string](ConvertTo-Json -InputObject @($InitialLogs) -Compress)
+                    Add-CIPPAzDataTableEntity @OnboardTable -Entity $TenantOnboarding -Force -ErrorAction Stop
                     Write-LogMessage -headers $Headers -API $APIName -message "Onboarding job $Id started" -Sev 'Info' -LogData @{ 'InstanceId' = $InstanceId }
                 }
 
