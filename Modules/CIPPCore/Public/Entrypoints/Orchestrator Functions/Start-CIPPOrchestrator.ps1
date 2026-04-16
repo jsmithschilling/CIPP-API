@@ -149,11 +149,15 @@ function Start-CIPPOrchestrator {
             Write-Information "Stored orchestrator input with GUID: $Guid"
 
             # Queue the orchestration execution with just the GUID
-            Add-CippQueueMessage -Cmdlet 'Start-CIPPOrchestrator' -Parameters @{
+            $QueueSuccess = Add-CippQueueMessage -Cmdlet 'Start-CIPPOrchestrator' -Parameters @{
                 InputObjectGuid = $Guid
+            }
+            if (-not $QueueSuccess) {
+                throw "Failed to queue orchestration execution for GUID: $Guid"
             }
 
             Write-Information "Queued orchestration execution for GUID: $Guid"
+            return $Guid
 
         } catch {
             Write-Error "Failed to queue orchestration: $_"

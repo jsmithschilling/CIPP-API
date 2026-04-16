@@ -100,6 +100,44 @@ function Invoke-ExecOnboardTenant {
             }
         } catch {
             $ErrorMsg = Get-NormalizedError -message $($_.Exception.Message)
+
+            # If onboarding was created but queue/orchestrator startup failed, mark the job as failed
+            # so the UI does not remain stuck at "Queued / Waiting for onboarding job to start".
+            try {
+                if ($OnboardTable -and $SafeId) {
+                    $QueuedOnboarding = Get-CIPPAzDataTableEntity @OnboardTable -Filter "RowKey eq '$SafeId'"
+                    if ($QueuedOnboarding -and $QueuedOnboarding.Status -eq 'queued') {
+                        $QueuedSteps = try { $QueuedOnboarding.OnboardingSteps | ConvertFrom-Json -ErrorAction Stop } catch { $null }
+                        if ($QueuedSteps -and $QueuedSteps.Step1) {
+                            $QueuedSteps.Step1.Status = 'failed'
+                            $QueuedSteps.Step1.Message = 'Failed to start onboarding job. Check queue/offloading configuration and retry.'
+                            $QueuedOnboarding.OnboardingSteps = [string](ConvertTo-Json -InputObject $QueuedSteps -Compress)
+                        }
+
+                        $QueuedLogs = [System.Collections.Generic.List[object]]::new()
+                        try {
+                            $ExistingLogs = @($QueuedOnboarding.Logs | ConvertFrom-Json -ErrorAction Stop)
+                            foreach ($LogEntry in $ExistingLogs) {
+                                $QueuedLogs.Add($LogEntry)
+                            }
+                        } catch {
+                            # No existing logs; continue with an empty log collection.
+                        }
+                        $QueuedLogs.Add([PSCustomObject]@{
+                                Date = (Get-Date).ToUniversalTime()
+                                Log  = "Onboarding startup failed: $ErrorMsg"
+                            })
+
+                        $QueuedOnboarding.Status = 'failed'
+                        $QueuedOnboarding.Exception = [string]$ErrorMsg
+                        $QueuedOnboarding.Logs = [string](ConvertTo-Json -InputObject @($QueuedLogs) -Compress)
+                        Add-CIPPAzDataTableEntity @OnboardTable -Entity $QueuedOnboarding -Force -ErrorAction Stop
+                    }
+                }
+            } catch {
+                Write-Warning "Failed to update onboarding status after startup failure: $($_.Exception.Message)"
+            }
+
             $Results = "Function Error: $($_.InvocationInfo.ScriptLineNumber) - $ErrorMsg"
             $StatusCode = [HttpStatusCode]::BadRequest
         }
