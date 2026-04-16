@@ -9,6 +9,7 @@ function Push-ExecOnboardTenantQueue {
         $Id = $Item.id
         $Start = Get-Date
         $Logs = [System.Collections.Generic.List[object]]::new()
+        $SamMembershipsAdded = $false
         $OnboardTable = Get-CIPPTable -TableName 'TenantOnboarding'
         $TenantOnboarding = Get-CIPPAzDataTableEntity @OnboardTable -Filter "RowKey eq '$Id'"
 
@@ -286,6 +287,7 @@ function Push-ExecOnboardTenantQueue {
                     foreach ($LogEntry in $GroupMembershipLogs) {
                         $Result = $GroupMembershipResults | Where-Object { $_.id -eq $LogEntry.id }
                         if ($Result.status -match '^2[0-9]+') {
+                            $SamMembershipsAdded = $true
                             $Logs.Add([PSCustomObject]@{ Date = (Get-Date).ToUniversalTime(); Log = "Added SAM user to $($LogEntry.GroupName)" })
                         } else {
                             $ErrorMessage = if ($Result.body.error.message) { $Result.body.error.message } else { 'Unknown error' }
@@ -304,6 +306,38 @@ function Push-ExecOnboardTenantQueue {
             $TenantOnboarding.OnboardingSteps = [string](ConvertTo-Json -InputObject $OnboardingSteps -Compress)
             $TenantOnboarding.Logs = [string](ConvertTo-Json -InputObject @($Logs) -Compress)
             Add-CIPPAzDataTableEntity @OnboardTable -Entity $TenantOnboarding -Force -ErrorAction Stop
+
+            if ($SamMembershipsAdded) {
+                $RetryEpoch = [int64](([datetime]::UtcNow.AddMinutes(15)) - (Get-Date '1/1/1970')).TotalSeconds
+                $RetryParams = [PSCustomObject]@{
+                    Item = [PSCustomObject]@{
+                        id                         = $Item.id
+                        Roles                      = $Item.Roles
+                        AutoMapRoles               = $Item.AutoMapRoles
+                        IgnoreMissingRoles         = $Item.IgnoreMissingRoles
+                        StandardsExcludeAllTenants = $Item.StandardsExcludeAllTenants
+                    }
+                }
+                $RetryTask = [PSCustomObject]@{
+                    Name          = "GDAP Onboarding retry: $($Relationship.customer.displayName)"
+                    Command       = [PSCustomObject]@{ value = 'Push-ExecOnboardTenantQueue' }
+                    Parameters    = $RetryParams
+                    TenantFilter  = $env:TenantID
+                    Recurrence    = ''
+                    ScheduledTime = $RetryEpoch
+                }
+                $null = Add-CIPPScheduledTask -Task $RetryTask -DesiredStartTime ([string]$RetryEpoch)
+                $RetryMessage = 'Rescheduled: SAM user was added to GDAP security groups. Retrying in 15 minutes to allow Microsoft propagation to settle.'
+                $Logs.Add([PSCustomObject]@{ Date = (Get-Date).ToUniversalTime(); Log = $RetryMessage })
+                $OnboardingSteps.Step4.Status = 'pending'
+                $OnboardingSteps.Step4.Message = $RetryMessage
+                $TenantOnboarding.Status = 'running'
+                $TenantOnboarding.OnboardingSteps = [string](ConvertTo-Json -InputObject $OnboardingSteps -Compress)
+                $TenantOnboarding.Logs = [string](ConvertTo-Json -InputObject @($Logs) -Compress)
+                Add-CIPPAzDataTableEntity @OnboardTable -Entity $TenantOnboarding -Force -ErrorAction Stop
+                Write-LogMessage -API 'Onboarding' -message $RetryMessage -Sev 'Info'
+                return
+            }
         }
 
         if ($OnboardingSteps.Step3.Status -eq 'succeeded') {
