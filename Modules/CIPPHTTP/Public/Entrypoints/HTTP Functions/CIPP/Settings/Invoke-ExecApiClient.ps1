@@ -29,6 +29,7 @@ function Invoke-ExecApiClient {
             }
         }
         'AddUpdate' {
+            $Results = [System.Collections.Generic.List[object]]::new()
             if ($Request.Body.ClientId -or $Request.Body.AppName) {
                 $ClientId = $Request.Body.ClientId.value ?? $Request.Body.ClientId
                 $AddUpdateSuccess = $false
@@ -75,12 +76,16 @@ function Invoke-ExecApiClient {
                 }
             }
 
+            $IPValidationErrors = [System.Collections.Generic.List[string]]::new()
             if ($Request.Body.IpRange.value) {
                 $IpRange = [System.Collections.Generic.List[string]]::new()
                 $regexPattern = '^(?:(?:[0-9]{1,3}\.){3}[0-9]{1,3}(?:/\d{1,2})?|(?:[0-9A-Fa-f]{1,4}:){1,7}[0-9A-Fa-f]{1,4}(?:/\d{1,3})?)$'
                 foreach ($IP in @($Request.Body.IPRange.value)) {
+                    $IP = $IP.Trim()
                     if ($IP -match $regexPattern) {
                         $IpRange.Add($IP)
+                    } else {
+                        $IPValidationErrors.Add("'$IP' is not a valid IP address or CIDR range.")
                     }
                 }
             } else {
@@ -88,8 +93,8 @@ function Invoke-ExecApiClient {
             }
 
             if (!$AddUpdateSuccess) {
-                $Body = @{
-                    Results = @($AddedText)
+                if ($AddedText) {
+                    $Results.Add($AddedText)
                 }
             } else {
                 $ExistingClient = Get-CIPPAzDataTableEntity @Table -Filter "RowKey eq '$($ClientId)'"
@@ -98,15 +103,16 @@ function Invoke-ExecApiClient {
                     $Client.Role = [string]$Request.Body.Role.value
                     $Client.IPRange = "$(@($IpRange) | ConvertTo-Json -Compress)"
                     $Client.Enabled = $Request.Body.Enabled ?? $false
+                    $Client | Add-Member -NotePropertyName 'MCPAllowed' -NotePropertyValue ([bool]($Request.Body.MCPAllowed ?? $false)) -Force
                     Write-LogMessage -headers $Request.Headers -API 'ExecApiClient' -message "Updated API client $($Request.Body.ClientId)" -Sev 'Info'
                     if ($APIConfig.ApplicationSecret) {
-                        $Results = @{
-                            resultText = "API client updated and application secret reset for '$($Client.AppName)'. Use the Copy to Clipboard button to retrieve the new secret."
-                            copyField  = $APIConfig.ApplicationSecret
-                            state      = 'success'
-                        }
+                        $Results.Add(@{
+                                resultText = "API client updated and application secret reset for '$($Client.AppName)'. Use the Copy to Clipboard button to retrieve the new secret."
+                                copyField  = $APIConfig.ApplicationSecret
+                                state      = 'success'
+                            })
                     } else {
-                        $Results = 'API client updated'
+                        $Results.Add('API client updated')
                     }
                 } else {
                     $Client = @{
@@ -116,15 +122,46 @@ function Invoke-ExecApiClient {
                         'Role'         = [string]$Request.Body.Role.value
                         'IPRange'      = "$(@($IpRange) | ConvertTo-Json -Compress)"
                         'Enabled'      = $Request.Body.Enabled ?? $false
+                        'MCPAllowed'   = [bool]($Request.Body.MCPAllowed ?? $false)
                     }
-                    $Results = @{
-                        resultText = "API Client created with the name '$($Client.AppName)'. Use the Copy to Clipboard button to retrieve the secret."
-                        copyField  = $APIConfig.ApplicationSecret
-                        state      = 'success'
-                    }
+                    $Results.Add(@{
+                            resultText = "API Client created with the name '$($Client.AppName)'. Use the Copy to Clipboard button to retrieve the secret."
+                            copyField  = $APIConfig.ApplicationSecret
+                            state      = 'success'
+                        })
                 }
 
                 Add-CIPPAzDataTableEntity @Table -Entity $Client -Force | Out-Null
+
+                # When this client is MCP-enabled, configure its app registration as the MCP OAuth
+                # resource (host identifier URIs + v2 tokens) so the Claude connector flow can resolve it.
+                if ([bool]($Request.Body.MCPAllowed ?? $false)) {
+                    try {
+                        $null = Set-CIPPMCPClientApp -AppId $ClientId -Headers $Request.Headers
+                        $Results.Add('MCP resource URIs and v2 tokens configured on the app registration. Run Save to Azure to apply the changes.')
+                    } catch {
+                        $Results.Add(@{
+                                resultText = "Client saved, but MCP app configuration failed: $($_.Exception.Message)"
+                                state      = 'warning'
+                            })
+                    }
+                }
+            }
+
+            if ($IPValidationErrors.Count -gt 0) {
+                foreach ($ValidationError in $IPValidationErrors) {
+                    $Results.Add(@{
+                            resultText = $ValidationError
+                            state      = 'warning'
+                        })
+                }
+            }
+
+            if (!$AddUpdateSuccess) {
+                $Body = @{
+                    Results = @($Results)
+                }
+            } else {
                 $Body = @($Results)
             }
         }
@@ -170,8 +207,20 @@ function Invoke-ExecApiClient {
             $FunctionAppName = $env:WEBSITE_SITE_NAME
             $AllClients = Get-CIPPAzDataTableEntity @Table -Filter 'Enabled eq true' | Where-Object { ![string]::IsNullOrEmpty($_.RowKey) }
             $ClientIds = $AllClients.RowKey
+            # MCPAllowed can round-trip from table storage as a bool or a string; compare on string form.
+            $McpClientIds = @($AllClients | Where-Object { "$($_.MCPAllowed)" -eq 'True' } | ForEach-Object { $_.RowKey })
+            Write-Information "[ExecApiClient] MCP clients resolved for audiences/scope: $($McpClientIds -join ', ')"
             try {
-                Set-CippApiAuth -RGName $RGName -FunctionAppName $FunctionAppName -TenantId $TenantId -ClientIds $ClientIds
+                Set-CippApiAuth -RGName $RGName -FunctionAppName $FunctionAppName -TenantId $TenantId -ClientIds $ClientIds -McpClientIds $McpClientIds
+
+                # Advertise the MCP resource scope via App Service PRM so the Claude connector requests
+                # a scope that matches the resource app (clears AADSTS9010010). Cleared when no MCP clients.
+                if ($McpClientIds.Count -gt 0 -and $env:WEBSITE_HOSTNAME) {
+                    $null = Update-CIPPAzFunctionAppSetting -Name $FunctionAppName -ResourceGroupName $RGName -AppSetting @{ 'WEBSITE_AUTH_PRM_DEFAULT_WITH_SCOPES' = "https://$($env:WEBSITE_HOSTNAME)/user_impersonation" }
+                } else {
+                    $null = Update-CIPPAzFunctionAppSetting -Name $FunctionAppName -ResourceGroupName $RGName -AppSetting @{} -RemoveKeys @('WEBSITE_AUTH_PRM_DEFAULT_WITH_SCOPES')
+                }
+
                 $Body = @{ Results = 'API clients saved to Azure' }
                 Write-LogMessage -headers $Request.Headers -API 'ExecApiClient' -message 'Saved API clients to Azure' -Sev 'Info'
             } catch {
@@ -201,6 +250,40 @@ function Invoke-ExecApiClient {
                 } else {
                     $Results = @{
                         resultText = "Failed to reset secret for $($Client.AppName)"
+                        state      = 'error'
+                    }
+                }
+            }
+            $Body = @($Results)
+        }
+        'RepairUri' {
+            $Client = Get-CIPPAzDataTableEntity @Table -Filter "RowKey eq '$($Request.Body.ClientId)'"
+            if (!$Client) {
+                $Results = @{
+                    resultText = 'API client not found'
+                    state      = 'error'
+                }
+            } else {
+                try {
+                    $RepairResult = Repair-CippApiIdentifierUri -AppId $Request.Body.ClientId
+
+                    if ($RepairResult.Fixed) {
+                        Write-LogMessage -headers $Request.Headers -API 'ExecApiClient' -message "Repaired identifier URI for $($Client.AppName) $($RepairResult.Message)" -Sev 'Info'
+                        $Results = @{
+                            resultText = "Identifier URI fixed for $($Client.AppName). $($RepairResult.Message)"
+                            state      = 'success'
+                        }
+                    } else {
+                        $Results = @{
+                            resultText = "Identifier URI already correct for $($Client.AppName). $($RepairResult.Message)"
+                            state      = 'info'
+                        }
+                    }
+                } catch {
+                    $ErrorMessage = Get-CippException -Exception $_
+                    Write-LogMessage -headers $Request.Headers -API 'ExecApiClient' -message "Failed to repair identifier URI for $($Client.AppName) $($ErrorMessage.NormalizedError)" -Sev 'Error' -LogData $ErrorMessage
+                    $Results = @{
+                        resultText = "Failed to repair identifier URI for $($Client.AppName) $($ErrorMessage.NormalizedError)"
                         state      = 'error'
                     }
                 }
