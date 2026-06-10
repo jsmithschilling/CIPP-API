@@ -30,8 +30,9 @@ function Start-UserTasksOrchestrator {
         $4HoursAgo = (Get-Date).AddHours(-4).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')
         $24HoursAgo = (Get-Date).AddHours(-24).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')
         # Pending = orchestrator queued, Running = actively executing
-        # Pick up: Planned, Failed-Planned, stuck Pending (>24hr), or stuck Running (>4hr for large AllTenants tasks)
-        $Filter = "PartitionKey eq 'ScheduledTask' and (TaskState eq 'Planned' or TaskState eq 'Failed - Planned' or (TaskState eq 'Pending' and Timestamp lt datetime'$24HoursAgo') or (TaskState eq 'Running' and Timestamp lt datetime'$4HoursAgo') or (TaskState eq 'Processing' and Timestamp lt datetime'$4HoursAgo'))"
+        # Pick up: Planned, Failed-Planned, recurring Failed, stuck Pending (>24hr),
+        # or stuck Running/Processing (>4hr for large AllTenants tasks).
+        $Filter = "PartitionKey eq 'ScheduledTask' and (TaskState eq 'Planned' or TaskState eq 'Failed - Planned' or (TaskState eq 'Failed' and Recurrence ne '0' and Recurrence ne '') or (TaskState eq 'Pending' and Timestamp lt datetime'$24HoursAgo') or (TaskState eq 'Running' and Timestamp lt datetime'$4HoursAgo') or (TaskState eq 'Processing' and Timestamp lt datetime'$4HoursAgo'))"
         $tasks = Get-CIPPAzDataTableEntity @Table -Filter $Filter
     }
 
@@ -185,13 +186,38 @@ function Start-UserTasksOrchestrator {
                 }
             } catch {
                 $errorMessage = $_.Exception.Message
+                $State = 'Failed'
+                $ScheduledTime = [string]$task.ScheduledTime
+
+                if ($task.Recurrence -and $task.Recurrence -ne '0') {
+                    $Recurrence = $task.Recurrence
+                    if ($Recurrence -match '^\d+$') {
+                        $Recurrence = "$Recurrence`d"
+                    }
+
+                    $secondsToAdd = switch -Regex ($Recurrence) {
+                        '(\d+)m$' { [int64]$matches[1] * 60 }
+                        '(\d+)h$' { [int64]$matches[1] * 3600 }
+                        '(\d+)d$' { [int64]$matches[1] * 86400 }
+                        default { 0 }
+                    }
+
+                    if ($secondsToAdd -gt 0) {
+                        if ([int64]$task.ScheduledTime -lt ($currentUnixTime - $secondsToAdd)) {
+                            $task.ScheduledTime = $currentUnixTime
+                        }
+                        $ScheduledTime = [string]([int64]$task.ScheduledTime + [int64]$secondsToAdd)
+                        $State = 'Failed - Planned'
+                    }
+                }
 
                 $null = Update-AzDataTableEntity -Force @Table -Entity @{
                     PartitionKey = $task.PartitionKey
                     RowKey       = $task.RowKey
                     Results      = "$errorMessage"
                     ExecutedTime = "$currentUnixTime"
-                    TaskState    = 'Failed'
+                    ScheduledTime = $ScheduledTime
+                    TaskState    = $State
                 }
                 Write-LogMessage -API 'Scheduler_UserTasks' -tenant $tenant -message "Failed to execute task $($task.Name): $errorMessage" -sev Error
             }
