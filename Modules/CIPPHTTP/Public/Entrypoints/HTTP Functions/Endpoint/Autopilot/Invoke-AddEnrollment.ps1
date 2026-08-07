@@ -14,7 +14,6 @@ function Invoke-AddEnrollment {
         $ParamSplat = @{
             TenantFilter          = $Tenant
             ShowProgress          = $Profbod.ShowProgress
-            AllowRetry            = $Profbod.AllowRetry
             BlockDevice           = $Profbod.blockDevice
             AllowReset            = $Profbod.AllowReset
             EnableLog             = $Profbod.EnableLog

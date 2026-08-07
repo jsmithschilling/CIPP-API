@@ -18,33 +18,20 @@
     }
 
     try {
-        $LookbackDays = 30
-        if ($InputValue -is [hashtable] -and $InputValue.LookbackDays) {
-            $LookbackDays = [int]$InputValue.LookbackDays
-        } elseif ($InputValue -and $InputValue.PSObject.Properties.Name -contains 'LookbackDays' -and $InputValue.LookbackDays) {
-            $LookbackDays = [int]$InputValue.LookbackDays
-        }
-
-        if ($LookbackDays -lt 1) {
-            $LookbackDays = 1
-        } elseif ($LookbackDays -gt 30) {
-            $LookbackDays = 30
-        }
-
         $cmdParams = @{
             PageSize          = 1000
             ReleaseStatus     = 'Requested'
-            StartReceivedDate = (Get-Date).AddDays(-$LookbackDays)
+            StartReceivedDate = (Get-Date).AddHours(-6)
             EndReceivedDate   = (Get-Date).AddHours(0)
         }
         $RequestedReleases = New-ExoRequest -tenantid $TenantFilter -cmdlet 'Get-QuarantineMessage' -cmdParams $cmdParams -ErrorAction Stop | Select-Object -ExcludeProperty *data.type* | Sort-Object -Property ReceivedTime
 
-        # Get the CIPP URL for the Quarantine link
-        $CippConfigTable = Get-CippTable -tablename Config
-        $CippConfig = Get-CIPPAzDataTableEntity @CippConfigTable -Filter "PartitionKey eq 'InstanceProperties' and RowKey eq 'CIPPURL'"
-        $CIPPUrl = 'https://{0}' -f $CippConfig.Value
-
         if ($RequestedReleases) {
+            # Get the CIPP URL for the Quarantine link
+            $CippConfigTable = Get-CippTable -tablename Config
+            $CippConfig = Get-CIPPAzDataTableEntity @CippConfigTable -Filter "PartitionKey eq 'InstanceProperties' and RowKey eq 'CIPPURL'"
+            $CIPPUrl = 'https://{0}' -f $CippConfig.Value
+
             $AlertData = foreach ($Message in $RequestedReleases) {
                 [PSCustomObject]@{
                     Identity          = $Message.Identity
@@ -62,15 +49,6 @@
             }
 
             Write-AlertTrace -cmdletName $MyInvocation.MyCommand -tenantFilter $TenantFilter -data $AlertData
-        } else {
-            Write-AlertTrace -cmdletName $MyInvocation.MyCommand -tenantFilter $TenantFilter -data ([PSCustomObject]@{
-                    QueueStatus      = 'Empty'
-                    RequestedCount   = 0
-                    LookbackDays     = $LookbackDays
-                    ReleaseStatus    = 'Requested'
-                    QuarantineViewUrl = "$CIPPUrl/email/administration/quarantine?tenantFilter=$TenantFilter"
-                    Tenant           = $TenantFilter
-                })
         }
     } catch {
         $ErrorMessage = Get-CippException -Exception $_
